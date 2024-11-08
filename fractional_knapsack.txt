@@ -1,0 +1,35 @@
+class Item:
+    def __init__(self, value, weight):
+        self.value = value
+        self.weight = weight
+
+    def value_per_weight(self):
+        return self.value / self.weight
+
+def fractional_knapsack(items, capacity):
+    items.sort(key=lambda item: item.value_per_weight(), reverse=True)
+    total_value = 0.0
+    for item in items:
+        if capacity >= item.weight:
+            capacity -= item.weight
+            total_value += item.value
+        else:
+            total_value += item.value_per_weight() * capacity
+            break
+    return total_value
+
+def get_items_from_user():
+    items = []
+    n = int(input("Enter the number of items: "))
+    for i in range(n):
+        print(f"\nEnter details for Item {i + 1}:")
+        value = float(input("Value: "))
+        weight = float(input("Weight: "))
+        items.append(Item(value, weight))
+    return items
+
+if __name__ == "__main__":
+    items = get_items_from_user()
+    capacity = float(input("\nEnter the capacity of the knapsack: "))
+    max_value = fractional_knapsack(items, capacity)
+    print(f"\nMaximum value in the knapsack: {max_value:.2f}")
